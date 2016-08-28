@@ -1,0 +1,30 @@
+//src is the source str
+//newstr is the new replace str
+//findstr is the searching str
+//repstr is the need pelace substr
+//src and newstr can same str
+int wcsstrrpl(wchar_t *src, wchar_t *newstr, int max, wchar_t *findstr, wchar_t *repstr)
+{
+	//finder must have extent,otherwise wcsstr will return non-null
+	if (src == NULL || newstr == NULL || findstr == NULL || repstr == NULL || wcslen(findstr) == 0)
+		return 0;
+	wchar_t tmpstr[255]=L"";
+	wchar_t *fp = src, *p = wcsstr(src, findstr);
+	//if can't find,return
+	if (p == NULL)
+		return 0;
+	int strlen = 0, strplen = 0;
+	while (p)
+	{
+		strlen = wcslen(fp);
+		strplen = wcslen(p);
+		wcsncat_s(tmpstr, max, fp, strlen - strplen);
+		wcscat_s(tmpstr, max, repstr);
+		//fp point forword
+		fp = p + wcslen(findstr);
+		p = wcsstr(fp, findstr);
+	}
+	wcscat_s(tmpstr, max, fp);
+	wcscpy_s(newstr, max, tmpstr);
+	return 1;
+}
